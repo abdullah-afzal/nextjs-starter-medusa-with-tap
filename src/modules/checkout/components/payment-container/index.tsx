@@ -25,6 +25,10 @@ const PaymentInfoMap: Record<string, { title: string; description: string }> = {
     title: "PayPal",
     description: "Secure payment with PayPal",
   },
+  tap: {
+    title: "Tap payment",
+    description: "Secure payment using tap payments",
+  },
   manual: {
     title: "Test payment",
     description: "Test payment using medusa-payment-manual",

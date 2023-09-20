@@ -53,6 +53,10 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ paymentSession }) => {
       return (
         <PayPalPaymentButton notReady={notReady} session={paymentSession} />
       )
+    case "tap":
+        return (
+          <TapPaymentButton notReady={notReady} session={paymentSession} />
+        )
     default:
       return <Button disabled>Select a payment method</Button>
   }
@@ -163,7 +167,7 @@ const StripePaymentButton = ({
 }
 
 const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ""
-
+const TAP_CLIENT_ID = process.env.NEXT_PUBLIC_TAP_CLIENT_ID || ""
 const PayPalPaymentButton = ({
   session,
   notReady,
@@ -217,6 +221,36 @@ const PayPalPaymentButton = ({
         disabled={notReady || submitting}
       />
     </PayPalScriptProvider>
+  )
+}
+
+const TapPaymentButton = ({
+  session,
+  notReady,
+}: {
+  session: PaymentSession
+  notReady: boolean
+}) => {
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  )
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+    
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+
+  const url = session.data.transaction.url;
+  return (<>
+    <Button><a href={url}>Pay with Tap</a></Button>
+   <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+   </>
   )
 }
 
