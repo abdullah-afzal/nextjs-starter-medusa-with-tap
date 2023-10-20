@@ -5,6 +5,7 @@ import Register from "@modules/account/components/register"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import Login from "../components/login"
+import PhoneLogin from "../components/whatsapp-login"
 
 const LoginTemplate = () => {
   const { loginView, customer, retrievingCustomer } = useAccount()
@@ -20,7 +21,13 @@ const LoginTemplate = () => {
 
   return (
     <div className="w-full flex justify-center py-24">
-      {currentView === "sign-in" ? <Login /> : <Register />}
+      {currentView === "sign-in" ? (
+        <Login />
+      ) : currentView === "register" ? (
+        <Register />
+      ) : (
+        currentView === "whatsapp" && <PhoneLogin />
+      )}
     </div>
   )
 }

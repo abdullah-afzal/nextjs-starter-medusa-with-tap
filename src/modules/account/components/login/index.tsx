@@ -75,6 +75,16 @@ const Login = () => {
         <Button className="mt-6">Enter</Button>
       </form>
       <span className="text-center text-gray-700 text-small-regular mt-6">
+        Login by {" "}
+        <button
+          onClick={() => setCurrentView(LOGIN_VIEW.WHATSAPP)}
+          className="underline"
+        >
+          Whatsapp
+        </button>
+        .
+      </span>
+      <span className="text-center text-gray-700 text-small-regular mt-6">
         Not a member?{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.REGISTER)}

@@ -10,6 +10,7 @@ import React, { createContext, useCallback, useContext, useState } from "react"
 export enum LOGIN_VIEW {
   SIGN_IN = "sign-in",
   REGISTER = "register",
+  WHATSAPP = "whatsapp"
 }
 
 interface AccountContext {
