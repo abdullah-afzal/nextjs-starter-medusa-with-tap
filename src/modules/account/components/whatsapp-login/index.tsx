@@ -12,7 +12,7 @@ const PhoneLogin = () => {
   const [otp, setOtp] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
-  const [countdown, setCountdown] = useState(30);
+  const [countdown, setCountdown] = useState(60);
 
   const router = useRouter();
   const { refetchCustomer } = useAccount()
@@ -45,7 +45,7 @@ const PhoneLogin = () => {
     }
 
     // Start the countdown
-    setCountdown(30);
+    setCountdown(60);
   };
   const [authError, setAuthError] = useState<string | undefined>(undefined)
   const handleError = (_e: Error) => {
