@@ -29,6 +29,22 @@ const PaymentInfoMap: Record<string, { title: string; description: string }> = {
     title: "Tap payment",
     description: "Secure payment using tap payments",
   },
+  "tap-mada": {
+    title: "Mada payment",
+    description: "Secure payment using mada payments",
+  },
+  "tap-cards": {
+    title: "Card payment",
+    description: "Secure payment using card",
+  },
+  "tap-tabby": {
+    title: "Tabby payment",
+    description: "Secure payment using Tabby",
+  },
+  "tap-googlePay": {
+    title: "GPay",
+    description: "Secure payment using Google Pay",
+  },
   manual: {
     title: "Test payment",
     description: "Test payment using medusa-payment-manual",

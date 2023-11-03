@@ -54,8 +54,24 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ paymentSession }) => {
         <PayPalPaymentButton notReady={notReady} session={paymentSession} />
       )
     case "tap":
+      return (
+        <TapPaymentButton notReady={notReady} session={paymentSession} />
+      )
+    case "tap-mada":
+      return (
+        <TapMadaPaymentButton notReady={notReady} session={paymentSession} />
+      )
+      case "tap-cards":
+      return (
+        <TapCardPaymentButton notReady={notReady} session={paymentSession} />
+      )
+      case "tap-tabby":
+      return (
+        <TapTabbyPaymentButton notReady={notReady} session={paymentSession} />
+      )
+      case "tap-googlePay":
         return (
-          <TapPaymentButton notReady={notReady} session={paymentSession} />
+          <TapGPayPaymentButton notReady={notReady} session={paymentSession} />
         )
     default:
       return <Button disabled>Select a payment method</Button>
@@ -253,6 +269,127 @@ const TapPaymentButton = ({
    </>
   )
 }
+
+const TapMadaPaymentButton = ({
+  session,
+  notReady,
+}: {
+  session: PaymentSession
+  notReady: boolean
+}) => {
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  )
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+    
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+
+  const url = session.data.transaction.url;
+  return (<>
+    <Button><a href={url}>Pay with Mada</a></Button>
+   <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+   </>
+  )
+}
+
+const TapGPayPaymentButton = ({
+  session,
+  notReady,
+}: {
+  session: PaymentSession
+  notReady: boolean
+}) => {
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  )
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+    
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+
+  const url = session.data.transaction.url;
+  return (<>
+    <Button><a href={url}>Pay with Google Pay</a></Button>
+   <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+   </>
+  )
+}
+
+const TapTabbyPaymentButton = ({
+  session,
+  notReady,
+}: {
+  session: PaymentSession
+  notReady: boolean
+}) => {
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  )
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+    
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+
+  const url = session.data.transaction.url;
+  return (<>
+    <Button><a href={url}>Pay with Tabby</a></Button>
+   <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+   </>
+  )
+}
+
+const TapCardPaymentButton = ({
+  session,
+  notReady,
+}: {
+  session: PaymentSession
+  notReady: boolean
+}) => {
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  )
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+    
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+
+  const url = session.data.transaction.url;
+  return (<>
+    <Button><a href={url}>Pay with Card</a></Button>
+   <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+   </>
+  )
+}
+
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   const [submitting, setSubmitting] = useState(false)
