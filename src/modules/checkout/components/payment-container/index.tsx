@@ -3,7 +3,9 @@ import Radio from "@modules/common/components/radio"
 import clsx from "clsx"
 import React from "react"
 import PaymentStripe from "../payment-stripe"
+import PaymentArabBank from "../payment-arab-bank"
 import PaymentTest from "../payment-test"
+import Input from "@modules/common/components/input"
 
 type PaymentContainerProps = {
   paymentSession: PaymentSession
@@ -45,6 +47,18 @@ const PaymentInfoMap: Record<string, { title: string; description: string }> = {
     title: "GPay",
     description: "Secure payment using Google Pay",
   },
+  "Tabby": {
+    title: "tabby",
+    description: "Test payment using tabby",
+  },
+  "Tamara": {
+    title: "Tamara",
+    description: "Test payment using tamara",
+  },
+  "arab-bank":{
+    title: "Arab Bank",
+    description: "Secure payment using Arab bank",
+  },
   manual: {
     title: "Test payment",
     description: "Test payment using medusa-payment-manual",
@@ -57,6 +71,7 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
   setSelected,
   disabled = false,
 }) => {
+  
   return (
     <div
       className={clsx(
@@ -90,6 +105,33 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
   )
 }
 
+const CardNumber = () => {
+  return (
+    <div className=" border-gray-200 py-2 relative">
+      
+      <Input label="Card Number" name="card_number" />
+    </div>
+  )
+}
+
+const CardExpiry = () => {
+  return (
+    <div className=" border-gray-200 w-full py-2 relative">
+      
+      <Input label="Expiration date" name="expiration_date"/>
+    </div>
+  )
+}
+
+const CardCVC = () => {
+  return (
+    <div className=" border-gray-200 w-full py-2 relative">
+      
+      <Input label="CVC" name="cvc"/>
+    </div>
+  )
+}
+
 const PaymentElement = ({
   paymentSession,
 }: {
@@ -105,9 +147,24 @@ const PaymentElement = ({
     case "manual":
       // We only display the test payment form if we are in a development environment
       return process.env.NODE_ENV === "development" ? <PaymentTest /> : null
+    case "arab-bank":
+      return (
+        <div className="pt-8 pr-7">
+          <div>
+      <div className="flex flex-col relative w-full pb-6">
+        <CardNumber  />
+        <div className="flex items-center mt-12 relative gap-x-4">
+          <CardExpiry  />
+          <CardCVC />
+        </div>
+      </div>
+    </div>
+        </div>
+      )
     default:
       return null
   }
 }
+
 
 export default PaymentContainer
