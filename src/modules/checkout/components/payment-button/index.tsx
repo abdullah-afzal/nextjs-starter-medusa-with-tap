@@ -57,6 +57,10 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ paymentSession }) => {
       return (
         <PayPalPaymentButton notReady={notReady} session={paymentSession} />
       )
+    case "center-moroco":
+      return (
+        <CenterMorocoPaymentButton notReady={notReady} session={paymentSession} />
+      )
       case "Tabby":
         return (
           <TabbyPaymentButton notReady={notReady} session={paymentSession} />
@@ -84,6 +88,18 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ paymentSession }) => {
       case "tap-googlePay":
         return (
           <TapGPayPaymentButton notReady={notReady} session={paymentSession} />
+        )
+      case "Sezzle":
+        return (
+          <SezzlePaymentButton notReady={notReady} session={paymentSession} />
+        )
+      case "stc":
+        return (
+          <STCPaymentButton notReady={notReady} session={paymentSession} />
+        )
+      case "noon":
+        return (
+          <NoonPaymentButton notReady={notReady} session={paymentSession} />
         )
     default:
       return <Button disabled>Select a payment method</Button>
@@ -284,6 +300,36 @@ const TapPaymentButton = ({
   )
 }
 
+// const ArabBankPaymentButton = ({
+//   session,
+//   notReady,
+// }: {
+//   session: PaymentSession
+//   notReady: boolean
+// }) => {
+//   const [errorMessage, setErrorMessage] = useState<string | undefined>(
+//     undefined
+//   )
+//   const [submitting, setSubmitting] = useState(false)
+
+//   const { onPaymentCompleted } = useCheckout()
+
+//   const handlePayment = () => {
+//     setSubmitting(true)
+    
+//     onPaymentCompleted()
+
+//     setSubmitting(false)
+//   }
+
+  
+//   return (<>
+//     <Button onClick={()=>console.log(session.data)}>Pay with Arabk Bank</Button>
+//    <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+//    </>
+//   )
+// }
+
 const ArabBankPaymentButton = ({
   session,
   notReady,
@@ -300,21 +346,81 @@ const ArabBankPaymentButton = ({
 
   const handlePayment = () => {
     setSubmitting(true)
-    
+    console.log("it is getting called")
     onPaymentCompleted()
 
     setSubmitting(false)
   }
 
+  useEffect(()=>{
+    handlePayment()
+    
+  },[])
   
+
+  const generateFormFields = () => {
+    return Object.entries(session.data).map(([name, value]) => (
+      <input key={name} id={name} type="hidden" name={name} value={value as string} />
+    ));
+  };
+
+  return (
+    <>
+      <form id="payment_confirmation" action="https://testsecureacceptance.cybersource.com/pay" method="post">
+      
+{generateFormFields()}
+
+        
+        <Button type="submit" id="submit" value="Confirm">Complete Payment</Button>
+      </form>
+      <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+    </>
+  );
+};
+
+
+
+const CenterMorocoPaymentButton = ({
+  session,
+  notReady,
+}: {
+  session: PaymentSession
+  notReady: boolean
+}) => {
+
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  )
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+    
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+  const generateFormFields = () => {
+    return Object.entries(session.data).map(([name, value]) => (
+      <input key={name} id={name} type="hidden" name={name} value={value as string} />
+    ));
+
+  };
+  // console.log(session.data)
   return (<>
-    <Button onClick={()=>console.log(session)}>Pay with Arabk Bank</Button>
+    <form id="payment_confirmation" action="https://testpayment.cmi.co.ma/fim/est3Dgate" method="post">
+
+      {generateFormFields()}
+
+
+      <Button type="submit" id="submit" value="Confirm">Pay with Center Moroco</Button>
+    </form>
    <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
    </>
   )
 }
-
-
 
 const TabbyPaymentButton = ({
   session,
@@ -368,9 +474,9 @@ const TamaraPaymentButton = ({
     setSubmitting(false)
   }
 
-  const url = session.data.checkout_url;
+  var url = session.data.checkout_url || null;
   return (<>
-    <Button><a href={url}>Pay with Tamara</a></Button>
+    <Button disabled={!url}><a href={url}>Pay with Tamara</a></Button>
    <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
    </>
   )
@@ -495,6 +601,74 @@ const TapCardPaymentButton = ({
   )
 }
 
+const SezzlePaymentButton = ({ session, notReady }: {session: PaymentSession,  notReady: boolean}) => {
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+  
+  //@ts-ignore
+  const url = session?.data?.order?.checkout_url;
+
+  return (
+    <>
+    <Button><a href={url}>Pay with Sezzle</a></Button>
+   <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+   </>
+  )
+}
+
+const STCPaymentButton = ({ session, notReady }: {session: PaymentSession,  notReady: boolean}) => {
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+  
+  console.log(session)
+
+  return (
+    <>
+   <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+   </>
+  )
+}
+
+const NoonPaymentButton = ({ session, notReady }: {session: PaymentSession,  notReady: boolean}) => {
+  const [submitting, setSubmitting] = useState(false)
+
+  const { onPaymentCompleted } = useCheckout()
+
+  const handlePayment = () => {
+    setSubmitting(true)
+
+    onPaymentCompleted()
+
+    setSubmitting(false)
+  }
+  
+  const url = session.data.result.checkoutData?.postUrl || "";
+
+  return (
+    <>
+    <Button disabled={submitting || notReady}><a href={url}>{submitting ? <Spinner /> :"Pay with Noon"}</a></Button>
+   <Button disabled={submitting || notReady} onClick={handlePayment}>{submitting ? <Spinner /> :"CheckOut"}</Button>
+   </>
+  )
+}
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   const [submitting, setSubmitting] = useState(false)

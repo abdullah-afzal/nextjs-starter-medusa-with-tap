@@ -63,6 +63,22 @@ const PaymentInfoMap: Record<string, { title: string; description: string }> = {
     title: "Test payment",
     description: "Test payment using medusa-payment-manual",
   },
+  "center-moroco":{
+    title: "Center Moroco",
+    description: "Secure payment using CMI",
+  },
+  "Sezzle":{
+    title: "Sezzle",
+    description: "Buy Now, Pay Later",
+  },
+  "stc":{
+    title: "STC Pay",
+    description: "Secure payment using STC Pay",
+  },
+  "noon":{
+    title: "Noon Pay",
+    description: "",
+  }
 }
 
 const PaymentContainer: React.FC<PaymentContainerProps> = ({
@@ -89,10 +105,10 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
         <Radio checked={selected} />
         <div className="flex flex-col text-left">
           <h3 className="text-base-semi leading-none text-gray-900">
-            {PaymentInfoMap[paymentSession.provider_id].title}
+            {PaymentInfoMap[paymentSession.provider_id]?.title}
           </h3>
           <span className="text-gray-700 text-small-regular mt-2">
-            {PaymentInfoMap[paymentSession.provider_id].description}
+            {PaymentInfoMap[paymentSession.provider_id]?.description}
           </span>
           {selected && (
             <div className="w-full mt-4">
@@ -147,20 +163,20 @@ const PaymentElement = ({
     case "manual":
       // We only display the test payment form if we are in a development environment
       return process.env.NODE_ENV === "development" ? <PaymentTest /> : null
-    case "arab-bank":
-      return (
-        <div className="pt-8 pr-7">
-          <div>
-      <div className="flex flex-col relative w-full pb-6">
-        <CardNumber  />
-        <div className="flex items-center mt-12 relative gap-x-4">
-          <CardExpiry  />
-          <CardCVC />
-        </div>
-      </div>
-    </div>
-        </div>
-      )
+    // case "arab-bank":
+    //   return (
+    //     <div className="pt-8 pr-7">
+    //       <div>
+    //   <div className="flex flex-col relative w-full pb-6">
+    //     <CardNumber  />
+    //     <div className="flex items-center mt-12 relative gap-x-4">
+    //       <CardExpiry  />
+    //       <CardCVC />
+    //     </div>
+    //   </div>
+    // </div>
+    //     </div>
+    //   )
     default:
       return null
   }
